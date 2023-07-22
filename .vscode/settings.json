@@ -1,0 +1,14 @@
+{
+    "python.envFile": "${workspaceFolder}/.env",
+    "pythonTestExplorer.testFramework": "pytest",
+    "python.testing.pytestEnabled": false,
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
+    "editor.renderWhitespace": "all", 
+
+}

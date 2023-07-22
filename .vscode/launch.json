@@ -1,0 +1,61 @@
+{
+    "configurations": [
+        
+        {
+            "name": "Python: Remote Attach",
+            "type": "python",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5678,
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "/code"
+                }
+            ]
+        },
+        {
+            "name": "Python: makemigrations",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\application\\manage.py",
+            "args": [
+                "makemigrations"
+            ],
+            "django": true
+        },
+        {
+            "name": "Python: migrate",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\application\\manage.py",
+            "args": [
+                "migrate"
+            ],
+            "django": true
+        },
+        {
+            "name": "Python: superuser",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\application\\manage.py",
+            "args": [
+                "createsuperuser"
+            ],
+            "django": true
+        },
+        {
+            "name": "Python: Django",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\application\\manage.py",
+            "args": [
+                "runserver",
+                "8000"
+            ],
+            "django": true
+        }
+    ]
+}

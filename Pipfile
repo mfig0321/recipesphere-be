@@ -1,0 +1,33 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "*"
+pylint = "*"
+pylint-django = "*"
+pytest = "*"
+pytest-django = "*"
+pytest-pythonpath = "*"
+django-extensions = "*"
+ipython = "*"
+
+[packages]
+atomicwrites = "*"
+coverage = "*"
+drf-spectacular = "*"
+django = "*"
+djangorestframework = "*"
+django-configurations = "*"
+django-cors-headers = "*"
+djangorestframework-gis = "*"
+gunicorn = "*"
+importlib_metadata = "*"
+psycopg2-binary = "*"
+python-dotenv = "*"
+pylint = "*"
+requests  = "*"
+
+[requires]
+python_version = "3.10"

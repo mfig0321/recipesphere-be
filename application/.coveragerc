@@ -1,0 +1,10 @@
+[run]
+omit = 
+    *migrations
+    _root*
+    asgi.py
+    debug.py
+    *apps.py
+    manage.py
+    wsgi.py
+source = .

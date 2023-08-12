@@ -3,7 +3,7 @@ FROM python:3.10
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get install -y gettext netcat postgresql-client
+RUN apt-get update && apt-get install -y gettext netcat-traditional postgresql-client
 
 # dependencies for geodjango
 RUN apt-get update && yes | apt-get -y install binutils libproj-dev gdal-bin postgis

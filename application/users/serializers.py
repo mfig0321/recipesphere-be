@@ -3,10 +3,11 @@ from django.contrib.auth import (
     get_user_model,
     authenticate,
 )
+from django.core.mail import send_mail
 
 from rest_framework import serializers
-
-
+from users import models
+from random import randint
 UserModel = get_user_model()
 
 
@@ -28,7 +29,14 @@ class UserSerializer(serializers.ModelSerializer):
 
         user.set_password(validated_data['password'])
         user.save()
-
+        otp = str(randint(100000, 999999))
+        send_mail(
+            'RecipeSphere One-time Password',
+            f'Your one time password is {otp}.',
+            'michael.figueroa73@gmail.com',
+            [f'{user.email}']
+        )
+        models.Profile.objects.create(user=user, otp=otp)
         user.password = ''
 
         return user
@@ -70,3 +78,17 @@ class AuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+
+    user = UserSerializer()
+
+    class Meta:
+        model= models.Profile
+        fields = "__all__"
+
+
+class VerifyEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    otp = serializers.CharField(max_length=6)

@@ -12,11 +12,12 @@ class Recipe(models.Model):
         on_delete=models.CASCADE,
         )
     title = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='recipes',null=True,blank=True)
     description = models.TextField(blank=True)
+    instructions = models.TextField(blank=True)
     time_minutes = models.IntegerField()
-    price = models.DecimalField(max_digits=5, decimal_places=2)
-    link = models.CharField(max_length=255, blank=True)
-    tags = models.ManyToManyField('tags.Tag')
+    ingredients = models.JSONField()
+    tags = models.ManyToManyField('tags.Tag',blank=True,null=True)
 
     def __str__(self):
         return self.title

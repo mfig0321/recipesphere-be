@@ -13,6 +13,9 @@ pipenv install --dev
 cd /code/application
 
 
+# make migrations
+pipenv run python manage.py makemigrations
+
 # run migrations
 pipenv run python manage.py migrate
 

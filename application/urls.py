@@ -23,7 +23,7 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 from health import views as health_views
-from user import views as user_views
+from users import views as user_views
 
 
 # Setup the URLs and include login URLs for the browsable API.
@@ -40,11 +40,13 @@ urlpatterns = [
         name='createuser'),
     path('', include('recipe.urls')),
     path('', include('tags.urls')),
+    path('', include('users.urls')),
     path(
         'api/docs/',
         SpectacularSwaggerView.as_view(url_name='api-schema'),
         name='api-docs'),
     path('api/me/', user_views.ManageUserView.as_view(), name='me'),
     path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),
-    path('api/token/', user_views.CreateTokenView.as_view(), name='token'),
+    path('api/login/', user_views.CreateTokenView.as_view(), name='login'),
+    path('api/verify/', user_views.VerifyEmailView.as_view(), name='verify'),
 ]

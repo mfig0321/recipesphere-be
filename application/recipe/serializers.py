@@ -11,7 +11,7 @@ from tags.serializers import TagSerializer
 class RecipeSerializer(serializers.ModelSerializer):
     """Serializer for recipes."""
 
-    tags = TagSerializer(many=True)
+    tags = TagSerializer(many=True, required=False)
 
     class Meta:
         model = Recipe

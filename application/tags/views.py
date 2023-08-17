@@ -18,4 +18,11 @@ class TagViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
+    def get_queryset(self):
+        name = self.request.query_params.get('name')
+        queryset = self.queryset
+        if name:
+            
+            queryset = queryset.filter(name=name)
 
+        return queryset.order_by('-id').distinct()

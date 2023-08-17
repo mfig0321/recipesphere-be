@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 
-
+from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from rest_framework import (authentication,
                             permissions,
@@ -16,7 +16,11 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from users.serializers import UserSerializer, AuthTokenSerializer, ProfileSerializer, VerifyEmailSerializer
+from users.serializers import (UserSerializer,
+                               AuthTokenSerializer,
+                               ProfileSerializer,
+                               VerifyEmailSerializer,
+                               ResendOtpSerializer)
 from users import models
 
 class CreateUserView(CreateAPIView):
@@ -100,3 +104,28 @@ class VerifyEmailView(views.APIView):
             return Response(
                     {'detail':'Your email has been verfied. You can now login.'},
                     status=status.HTTP_200_OK)
+
+
+class ResendOtpView(views.APIView):
+    permission_classes = [
+        permissions.AllowAny  # Or anon users can't register
+    ]
+    serializer_class = ResendOtpSerializer
+
+    def post(self, request):
+        data = request.data
+        user = User.objects.filter(email=data.get('email')).first()
+        if user is None:
+            return Response(
+                    {'detail':f'No user found for {data.get("email")}'},
+                    status=status.HTTP_400_BAD_REQUEST)
+        profile = models.Profile.objects.filter(user=user.pk).first()
+        send_mail(
+            'RecipeSphere One-time Password',
+            f'Your one time password is {profile.otp}.',
+            'michael.figueroa73@gmail.com',
+            [f'{user.email}']
+        )
+        return Response(
+                {'detail':'Your OTP has been resnt'},
+                status=status.HTTP_200_OK)

@@ -49,4 +49,5 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),
     path('api/login/', user_views.CreateTokenView.as_view(), name='login'),
     path('api/verify/', user_views.VerifyEmailView.as_view(), name='verify'),
+    path('api/resend_otp/', user_views.ResendOtpView.as_view(), name='resend'),
 ]

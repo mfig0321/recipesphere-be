@@ -15,6 +15,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
 
 from users.serializers import (UserSerializer,
                                AuthTokenSerializer,
@@ -22,6 +23,7 @@ from users.serializers import (UserSerializer,
                                VerifyEmailSerializer,
                                ResendOtpSerializer)
 from users import models
+from recipe import models as recipe_models
 
 class CreateUserView(CreateAPIView):
 
@@ -78,6 +80,21 @@ class ProfileViewSet(viewsets.ModelViewSet):
         self.serializer_class = ProfileSerializer
         return viewsets.ModelViewSet.list(self, *args, **kwargs)
     
+    @action(detail=False, methods=['post'])
+    def add_favorite(self, request, **kwargs):
+        recipe = recipe_models.Recipe.objects.filter(id=request.data.get('recipe')).first()
+        profile = models.Profile.objects.filter(user=self.request.user.pk).first()
+        profile.favorites.add(recipe)
+
+        return response.Response({"detail":"Favorite added"})
+
+    @action(detail=False, methods=['post'])
+    def remove_favorite(self, request, **kwargs):
+        recipe = recipe_models.Recipe.objects.filter(id=request.data.get('recipe')).first()
+        profile = models.Profile.objects.filter(user=self.request.user.pk).first()
+        profile.favorites.remove(recipe)
+
+        return response.Response({"detail":"Favorite removed"})
 
 class VerifyEmailView(views.APIView):
     permission_classes = [

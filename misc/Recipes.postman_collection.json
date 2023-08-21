@@ -116,6 +116,35 @@
 					"response": []
 				},
 				{
+					"name": "Resend Otp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "michael.figueroa73+test001@gmail.com",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/resend_otp/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"resend_otp",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "me",
 					"request": {
 						"method": "PATCH",
@@ -294,6 +323,181 @@
 			]
 		},
 		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Create Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "This is first comment",
+									"type": "text"
+								},
+								{
+									"key": "recipe",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/comments/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Boiled Crab Legs",
+									"type": "default"
+								},
+								{
+									"key": "description",
+									"value": "These crabs legs are boiled",
+									"type": "default"
+								},
+								{
+									"key": "time_minutes",
+									"value": "10",
+									"type": "default"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/micha/OneDrive/Documents/Programming/assets/boiled_crab_legs.jpg"
+								},
+								{
+									"key": "ingredients",
+									"value": "{\"1\":\"2lbs crabs legs\",\"2\":\"salt\",\"3\":\"3 Tbls butter\"}",
+									"type": "text"
+								},
+								{
+									"key": "instructions",
+									"value": "1.Boil for 10 minutes. 2. Crack Legs. 3. dip in butter",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/comments/3/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Comment by recipe",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Boiled Crab Legs",
+									"type": "default"
+								},
+								{
+									"key": "description",
+									"value": "These crabs legs are boiled",
+									"type": "default"
+								},
+								{
+									"key": "time_minutes",
+									"value": "10",
+									"type": "default"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/micha/OneDrive/Documents/Programming/assets/boiled_crab_legs.jpg"
+								},
+								{
+									"key": "ingredients",
+									"value": "{\"1\":\"2lbs crabs legs\",\"2\":\"salt\",\"3\":\"3 Tbls butter\"}",
+									"type": "text"
+								},
+								{
+									"key": "instructions",
+									"value": "1.Boil for 10 minutes. 2. Crack Legs. 3. dip in butter",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/comments/?recipe=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								""
+							],
+							"query": [
+								{
+									"key": "recipe",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Recipes",
 			"item": [
 				{
@@ -312,32 +516,32 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "Example Title",
+									"value": "Boiled Crab Legs",
 									"type": "default"
 								},
 								{
 									"key": "description",
-									"value": "Example Recipe Description",
+									"value": "These crabs legs are boiled",
 									"type": "default"
 								},
 								{
 									"key": "time_minutes",
-									"value": "5",
+									"value": "10",
 									"type": "default"
 								},
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/micha/OneDrive/Documents/Programming/assets/boiled_eggs.jpg"
+									"src": "/C:/Users/micha/OneDrive/Documents/Programming/assets/boiled_crab_legs.jpg"
 								},
 								{
 									"key": "ingredients",
-									"value": "{\"1\":\"eggs\",\"2\":\"salt\"}",
+									"value": "{\"1\":\"2lbs crabs legs\",\"2\":\"salt\",\"3\":\"3 Tbls butter\"}",
 									"type": "text"
 								},
 								{
 									"key": "instructions",
-									"value": "1.Boil for 10 minutes. 2. Peel eggs",
+									"value": "1.Boil for 10 minutes. 2. Crack Legs. 3. dip in butter",
 									"type": "text"
 								}
 							]
@@ -615,6 +819,37 @@
 					"response": []
 				},
 				{
+					"name": "Filter Recipe",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/recipe/?tags=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"recipe",
+								""
+							],
+							"query": [
+								{
+									"key": "tags",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Detail Recipe",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -782,6 +1017,31 @@
 				},
 				{
 					"name": "List Tags",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/tags/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"tags",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search tags",
 					"request": {
 						"method": "GET",
 						"header": [

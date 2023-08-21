@@ -42,6 +42,7 @@ class base(Configuration):
         'django.contrib.staticfiles',
 
         # local apps
+        'comments',
         'recipe',
         'tags',
         'users',

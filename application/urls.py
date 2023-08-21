@@ -38,6 +38,7 @@ urlpatterns = [
         'api/createuser/',
         user_views.CreateUserView.as_view(),
         name='createuser'),
+    path('', include('comments.urls')),
     path('', include('recipe.urls')),
     path('', include('tags.urls')),
     path('', include('users.urls')),

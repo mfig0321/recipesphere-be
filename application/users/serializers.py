@@ -6,6 +6,7 @@ from django.contrib.auth import (
 from django.core.mail import send_mail
 
 from rest_framework import serializers
+from recipe import serializers as recipe_serializer
 from users import models
 from random import randint
 UserModel = get_user_model()
@@ -83,6 +84,7 @@ class AuthTokenSerializer(serializers.Serializer):
 class ProfileSerializer(serializers.ModelSerializer):
 
     user = UserSerializer()
+    favorites = recipe_serializer.RecipeSerializer(many=True)
 
     class Meta:
         model= models.Profile

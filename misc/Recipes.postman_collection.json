@@ -1143,38 +1143,7 @@
 						],
 						"body": {
 							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "username",
-									"value": "testuser2",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "password",
-									"value": "testpass001",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "email",
-									"value": "test001@example.com",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "first_name",
-									"value": "test_f_name001",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "last_name",
-									"value": "test_l_name001",
-									"type": "default",
-									"disabled": true
-								}
-							]
+							"formdata": []
 						},
 						"url": {
 							"raw": "{{base_url}}/api/profile/",
@@ -1184,6 +1153,84 @@
 							"path": [
 								"api",
 								"profile",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add favorite",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "recipe",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/profile/add_favorite/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"add_favorite",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove favorite",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "recipe",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/profile/remove_favorite/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"remove_favorite",
 								""
 							]
 						}
@@ -1209,48 +1256,17 @@
 						],
 						"body": {
 							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "username",
-									"value": "testuser2",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "password",
-									"value": "testpass001",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "email",
-									"value": "test001@example.com",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "first_name",
-									"value": "test_f_name001",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "last_name",
-									"value": "test_l_name001",
-									"type": "default",
-									"disabled": true
-								}
-							]
+							"formdata": []
 						},
 						"url": {
-							"raw": "{{base_url}}/api/profile/1/",
+							"raw": "{{base_url}}/api/profile/2/",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"profile",
-								"1",
+								"2",
 								""
 							]
 						}

@@ -2,7 +2,7 @@ from rest_framework import viewsets, response, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
-
+from django.http import FileResponse
 from drf_spectacular.utils import(
     extend_schema_view,
     extend_schema,
@@ -14,6 +14,15 @@ from recipe.models import Recipe
 from recipe import serializers
 
 from tags.models import Tag
+import io
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+
+def insert_newlines(string, every=100):
+    lines = []
+    for i in range(0, len(string), every):
+        lines.append(string[i:i+every])
+    return '\n'.join(lines)
 
 
 @extend_schema_view(
@@ -67,6 +76,45 @@ class RecipeViewSet(viewsets.ModelViewSet):
         recipe.tags.add(tag)
 
         return response.Response({"detail":"Tag added"})
+
+    @action(detail=True, methods=['post'])
+    def download(self, request, **kwargs):
+        recipe = Recipe.objects.filter(id=kwargs.get('pk')).first()
+        if recipe is None:
+            return response.Response(
+                {'detail':'No Recipe found.'},
+                status=status.HTTP_204_NO_CONTENT
+            )
+        file_name = recipe.title.replace(" ", "-")
+        file_name = file_name + '.pdf'
+        buffer = io.BytesIO()
+        w, h = A4
+        c = canvas.Canvas(buffer)
+        text = c.beginText(50, h - 50)
+        text.setFont("Times-Roman", 24)
+        text.textLine(recipe.title)
+        c.drawText(text)
+        c.drawImage(recipe.image.url,50, h - 210, width=150, height=150)
+        text = c.beginText(50, h - 250)
+        text.setFont("Times-Roman",16)
+        text.textLines(f'Description: {insert_newlines(recipe.description)}')
+        text.textLine(f'Time to cook: {recipe.time_minutes} minutes.')
+        text.textLine('Ingredients:')
+        text.setFont("Times-Roman",12)
+        for item in recipe.ingredients:
+                value = recipe.ingredients[item]
+                text.textLine(f'-{value}')
+        text.setFont("Times-Roman",16)
+        text.textLine('Instructions:')
+        text.setFont("Times-Roman",12)
+        text.textLines(f'{insert_newlines(recipe.instructions)}')
+        c.drawText(text)
+        
+        c.showPage()
+        c.save()
+        buffer.seek(0)
+
+        return FileResponse(buffer, as_attachment=True, filename=file_name)
 
 
     @action(detail=True, methods=['post'])

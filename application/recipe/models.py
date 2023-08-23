@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-
+import uuid
 
 # Create your models here.
 
@@ -12,7 +12,7 @@ class Recipe(models.Model):
         on_delete=models.CASCADE,
         )
     title = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='recipes',null=True,blank=True)
+    image = models.ImageField(upload_to='recipes/',null=True,blank=True)
     description = models.TextField(blank=True)
     instructions = models.TextField(blank=True)
     time_minutes = models.IntegerField()

@@ -3,6 +3,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from django.http import FileResponse
+from django.core.mail import EmailMessage
 from drf_spectacular.utils import(
     extend_schema_view,
     extend_schema,
@@ -78,6 +79,19 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return response.Response({"detail":"Tag added"})
 
     @action(detail=True, methods=['post'])
+    def remove_tag(self, request, **kwargs):
+        tag = Tag.objects.filter(name=request.data.get('tag')).first()
+        if tag is None:
+            return response.Response(
+                {'detail':'tag does not exists'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        recipe = Recipe.objects.filter(id=kwargs.get('pk')).first()
+        recipe.tags.remove(tag)
+
+        return response.Response({"detail":"Tag removed"})
+
+    @action(detail=True, methods=['post'])
     def download(self, request, **kwargs):
         recipe = Recipe.objects.filter(id=kwargs.get('pk')).first()
         if recipe is None:
@@ -116,16 +130,58 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         return FileResponse(buffer, as_attachment=True, filename=file_name)
 
-
     @action(detail=True, methods=['post'])
-    def remove_tag(self, request, **kwargs):
-        tag = Tag.objects.filter(name=request.data.get('tag')).first()
-        if tag is None:
+    def share(self, request, **kwargs):
+        email = request.data.get('email')
+        if email is None:
             return response.Response(
-                {'detail':'tag does not exists'},
+                {'detail': 'email field must be present'},
                 status=status.HTTP_400_BAD_REQUEST
             )
         recipe = Recipe.objects.filter(id=kwargs.get('pk')).first()
-        recipe.tags.remove(tag)
+        if recipe is None:
+            return response.Response(
+                {'detail':'No Recipe found.'},
+                status=status.HTTP_204_NO_CONTENT
+            )
+        file_name = recipe.title.replace(" ", "-")
+        file_name = file_name + '.pdf'
+        buffer = io.BytesIO()
+        w, h = A4
+        c = canvas.Canvas(buffer)
+        text = c.beginText(50, h - 50)
+        text.setFont("Times-Roman", 24)
+        text.textLine(recipe.title)
+        c.drawText(text)
+        c.drawImage(recipe.image.url,50, h - 210, width=150, height=150)
+        text = c.beginText(50, h - 250)
+        text.setFont("Times-Roman",16)
+        text.textLines(f'Description: {insert_newlines(recipe.description)}')
+        text.textLine(f'Time to cook: {recipe.time_minutes} minutes.')
+        text.textLine('Ingredients:')
+        text.setFont("Times-Roman",12)
+        for item in recipe.ingredients:
+                value = recipe.ingredients[item]
+                text.textLine(f'-{value}')
+        text.setFont("Times-Roman",16)
+        text.textLine('Instructions:')
+        text.setFont("Times-Roman",12)
+        text.textLines(f'{insert_newlines(recipe.instructions)}')
+        c.drawText(text)
+        
+        c.showPage()
+        c.save()
+        pdf = buffer.getvalue()
+        buffer.close
+        EmailMsg = EmailMessage(
+            recipe.title,
+            None,
+            request.user.email,
+            [f'{request.data.get("email")}'],
+            None,
+            headers={'Reply-To':f'{request.user.email}'}
+        )
+        EmailMsg.attach(file_name, pdf, 'application/pdf')
+        EmailMsg.send()
 
-        return response.Response({"detail":"Tag removed"})
+        return response.Response({'detail': f'recipe sent to {request.data.get("email")}.'})

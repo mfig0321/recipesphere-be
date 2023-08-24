@@ -42,7 +42,7 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "testuser1",
+									"value": "testuser001",
 									"type": "default"
 								},
 								{
@@ -96,7 +96,7 @@
 								},
 								{
 									"key": "otp",
-									"value": "463157",
+									"value": "716235",
 									"type": "default"
 								}
 							]
@@ -145,65 +145,6 @@
 					"response": []
 				},
 				{
-					"name": "me",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Token 24c229240dff7a0bc58e0803830280e8e6b0c316",
-								"type": "default"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "username",
-									"value": "testuser2",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "password",
-									"value": "testpass001",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "email",
-									"value": "test001@example.com",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "first_name",
-									"value": "updated_test_f_name002",
-									"type": "default"
-								},
-								{
-									"key": "last_name",
-									"value": "test_l_name001",
-									"type": "default",
-									"disabled": true
-								}
-							]
-						},
-						"url": {
-							"raw": "{{base_url}}/api/me/",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"me",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "me get",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -223,6 +164,65 @@
 						"body": {
 							"mode": "formdata",
 							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/api/me/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "me",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "testuser2",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "testpass001",
+									"type": "default"
+								},
+								{
+									"key": "email",
+									"value": "test001@example.com",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "first_name",
+									"value": "updated_test_f_name002",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "last_name",
+									"value": "test_l_name001",
+									"type": "default",
+									"disabled": true
+								}
+							]
 						},
 						"url": {
 							"raw": "{{base_url}}/api/me/",
@@ -296,7 +296,7 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "testuser1",
+									"value": "testuser001",
 									"type": "default"
 								},
 								{
@@ -516,12 +516,12 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "Boiled Crab Legs",
+									"value": "Hard Boiled eggs",
 									"type": "default"
 								},
 								{
 									"key": "description",
-									"value": "These crabs legs are boiled",
+									"value": "This is a simple meal. It is boiled eggs with salt to taste.",
 									"type": "default"
 								},
 								{
@@ -532,16 +532,16 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/micha/OneDrive/Documents/Programming/assets/boiled_crab_legs.jpg"
+									"src": "/C:/Users/micha/OneDrive/Documents/Programming/assets/boiled_eggs.jpg"
 								},
 								{
 									"key": "ingredients",
-									"value": "{\"1\":\"2lbs crabs legs\",\"2\":\"salt\",\"3\":\"3 Tbls butter\"}",
+									"value": "{\"1\":\"6 eggs\",\"2\":\"salt\",\"3\":\"1 Tbls kethcup\"}",
 									"type": "text"
 								},
 								{
 									"key": "instructions",
-									"value": "1.Boil for 10 minutes. 2. Crack Legs. 3. dip in butter",
+									"value": "1.Boil for 10 minutes. 2. Crack and peel eggs. 3. dip in ketchup",
 									"type": "text"
 								}
 							]
@@ -606,21 +606,20 @@
 								},
 								{
 									"key": "instructions",
-									"value": "1.Boil for 10 minutes. 2. Peel eggs",
-									"type": "text",
-									"disabled": true
+									"value": "1.Fill large stockpot or Dutch oven half full with water; add seafood seasoning and salt. Heat to boiling. 2. Add crab legs. Cook 3 to 5 minutes or just until heated. Remove with tongs to serving platter. Serve warm with melted butter.",
+									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/api/recipe/1/",
+							"raw": "{{base_url}}/api/recipe/2/",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"recipe",
-								"1",
+								"2",
 								""
 							]
 						}
@@ -643,20 +642,20 @@
 							"formdata": [
 								{
 									"key": "tag",
-									"value": "boiled",
+									"value": "crabs",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/api/recipe/1/add_tag/",
+							"raw": "{{base_url}}/api/recipe/2/add_tag/",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"recipe",
-								"1",
+								"2",
 								"add_tag",
 								""
 							]
@@ -679,45 +678,14 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "title",
-									"value": "Example Title",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "description",
-									"value": "Example Recipe Description",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "time_minutes",
-									"value": "5",
-									"type": "default",
-									"disabled": true
-								},
-								{
-									"key": "image",
-									"type": "file",
-									"src": "/C:/Users/micha/OneDrive/Documents/Programming/assets/boiled_eggs.jpg",
-									"disabled": true
-								},
-								{
-									"key": "ingredients",
-									"value": "{\"1\":\"eggs\",\"2\":\"salt\"}",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "instructions",
-									"value": "1.Boil for 10 minutes. 2. Peel eggs",
-									"type": "text",
-									"disabled": true
+									"key": "tag",
+									"value": "eggs",
+									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/api/recipe/1/add_tag/",
+							"raw": "{{base_url}}/api/recipe/1/remove_tag/",
 							"host": [
 								"{{base_url}}"
 							],
@@ -725,7 +693,7 @@
 								"api",
 								"recipe",
 								"1",
-								"add_tag",
+								"remove_tag",
 								""
 							]
 						}
@@ -787,6 +755,166 @@
 								"api",
 								"recipe",
 								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download Recipe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Example Title",
+									"type": "default"
+								},
+								{
+									"key": "description",
+									"value": "Example Recipe Description",
+									"type": "default"
+								},
+								{
+									"key": "time_minutes",
+									"value": "5",
+									"type": "default"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/micha/OneDrive/Documents/Programming/assets/boiled_eggs.jpg"
+								},
+								{
+									"key": "ingredients",
+									"value": "{\"1\":\"eggs\",\"2\":\"salt\"}",
+									"type": "text"
+								},
+								{
+									"key": "instructions",
+									"value": "1.Boil for 10 minutes. 2. Peel eggs",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/recipe/1/download/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"recipe",
+								"1",
+								"download",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Share Recipe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "michael.figueroa73+test002@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/recipe/1/share/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"recipe",
+								"1",
+								"share",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recipe",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{access_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Example Title",
+									"type": "default"
+								},
+								{
+									"key": "description",
+									"value": "Example Recipe Description",
+									"type": "default"
+								},
+								{
+									"key": "time_minutes",
+									"value": "5",
+									"type": "default"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/micha/OneDrive/Documents/Programming/assets/boiled_eggs.jpg"
+								},
+								{
+									"key": "ingredients",
+									"value": "{\"1\":\"eggs\",\"2\":\"salt\"}",
+									"type": "text"
+								},
+								{
+									"key": "instructions",
+									"value": "1.Boil for 10 minutes. 2. Peel eggs",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/recipe/2/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"recipe",
+								"2",
 								""
 							]
 						}
@@ -1052,7 +1180,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/tags/",
+							"raw": "{{base_url}}/api/tags/?name=eggs",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1060,6 +1188,12 @@
 								"api",
 								"tags",
 								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "eggs"
+								}
 							]
 						}
 					},

@@ -6,6 +6,7 @@ from django.contrib.auth import (
 from django.core.mail import send_mail
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from recipe import serializers as recipe_serializer
 from users import models
 from random import randint
@@ -13,6 +14,11 @@ UserModel = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+
+    email = serializers.EmailField(
+        validators=[UniqueValidator(queryset=UserModel.objects.all())]
+    )
+
     class Meta:
         model = UserModel
         fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name')

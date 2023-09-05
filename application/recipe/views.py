@@ -19,7 +19,7 @@ import io
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 
-def insert_newlines(string, every=100):
+def insert_newlines(string, every):
     lines = []
     for i in range(0, len(string), every):
         lines.append(string[i:i+every])
@@ -111,7 +111,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         c.drawImage(recipe.image.url,50, h - 210, width=150, height=150)
         text = c.beginText(50, h - 250)
         text.setFont("Times-Roman",16)
-        text.textLines(f'Description: {insert_newlines(recipe.description)}')
+        text.textLines(f'Description: {insert_newlines(recipe.description, 80)}')
         text.textLine(f'Time to cook: {recipe.time_minutes} minutes.')
         text.textLine('Ingredients:')
         text.setFont("Times-Roman",12)
@@ -121,7 +121,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         text.setFont("Times-Roman",16)
         text.textLine('Instructions:')
         text.setFont("Times-Roman",12)
-        text.textLines(f'{insert_newlines(recipe.instructions)}')
+        text.textLines(f'{insert_newlines(recipe.instructions,100)}')
         c.drawText(text)
         
         c.showPage()
@@ -156,7 +156,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         c.drawImage(recipe.image.url,50, h - 210, width=150, height=150)
         text = c.beginText(50, h - 250)
         text.setFont("Times-Roman",16)
-        text.textLines(f'Description: {insert_newlines(recipe.description)}')
+        text.textLines(f'Description: {insert_newlines(recipe.description,80)}')
         text.textLine(f'Time to cook: {recipe.time_minutes} minutes.')
         text.textLine('Ingredients:')
         text.setFont("Times-Roman",12)
@@ -166,7 +166,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         text.setFont("Times-Roman",16)
         text.textLine('Instructions:')
         text.setFont("Times-Roman",12)
-        text.textLines(f'{insert_newlines(recipe.instructions)}')
+        text.textLines(f'{insert_newlines(recipe.instructions,100)}')
         c.drawText(text)
         
         c.showPage()

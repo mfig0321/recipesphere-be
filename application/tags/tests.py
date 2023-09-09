@@ -26,7 +26,7 @@ class TagModelTest(TestCase):
                 first_name='First Name',
                 last_name='Last Name'
         )
-        tag = Tag.objects.create(user=user, name='Tag1')
+        tag = Tag.objects.create(name='Tag1')
 
         self.assertEqual(str(tag), tag.name)
 
@@ -66,8 +66,8 @@ class PrivateRecipeApiTest(TestCase):
 
     def test_retrive_recipes(self):
         """Test list of recipes"""
-        Tag.objects.create(user=self.user, name='Dessert')
-        Tag.objects.create(user=self.user, name='Vegan')
+        Tag.objects.create(name='Dessert')
+        Tag.objects.create(name='Vegan')
 
         response = self.view(self.request)
         recipes = Tag.objects.all().order_by('-name')
@@ -75,28 +75,6 @@ class PrivateRecipeApiTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serializer.data)
-
-    def test_recipe_list_limited_to_user(self):
-        """Test list of recipes is limited to auth user"""
-
-        other_user = get_user_model().objects.create(
-            username='testuser2',
-            password='testpass002',
-            email='test002@example.com',
-            first_name='test_f_name002',
-            last_name='test_l_name002',
-        )
-
-        Tag.objects.create(user=self.user, name='Dessert')
-        Tag.objects.create(user=other_user, name='Vegan')
-
-        response = self.view(self.request)
-        tags = Tag.objects.filter(user=self.user)
-        serializer = TagSerializer(tags, many=True)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, serializer.data)
-
 
 class PrivateRecipeApiPatchTest(TestCase):
     """Test Authenticated API request"""
@@ -114,7 +92,7 @@ class PrivateRecipeApiPatchTest(TestCase):
 
     def test_update_tag(self):
         """Test updating tag."""
-        tag = Tag.objects.create(user=self.user, name='After-Dinner')
+        tag = Tag.objects.create(name='After-Dinner')
         payload = {'name': 'Dessert'}
         request = self.client.patch('/api/tags/', payload)
         force_authenticate(request, user=self.user)
@@ -142,12 +120,12 @@ class PrivateRecipeApiDeleteTest(TestCase):
 
     def test_delete_tag(self):
         """Test deleting tag."""
-        tag = Tag.objects.create(user=self.user, name='After-Dinner')
+        tag = Tag.objects.create(name='After-Dinner')
         request = self.client.delete('/api/tags/')
         force_authenticate(request, user=self.user)
         
         response = self.view(request, pk=tag.id)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        tags = Tag.objects.filter(user=self.user)
+        tags = Tag.objects.all()
         self.assertFalse(tags.exists())

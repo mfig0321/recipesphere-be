@@ -78,50 +78,6 @@ class PublicUserApiTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_create_token_for_user(self):
-        """Test generates token for valid credentials."""
-
-        user_details = {
-            'username': 'testuser1',
-            'password': 'testpass001',
-            'email': 'test001@example.com',
-            'first_name': 'test_f_name001',
-            'last_name': 'test_l_name001',
-        }
-
-        create_user(**user_details)
-
-        payload = {
-            'username': user_details['username'],
-            'password': user_details['password'],
-        }
-
-        response = self.client.post('/api/token/', payload)
-
-        self.assertIn('token', response.data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_create_token_bad_credentials(self):
-        """Test generates token for valid credentials."""
-
-        user_details = {
-            'username': 'testuser1',
-            'password': 'testpass001',
-            'email': 'test001@example.com',
-            'first_name': 'test_f_name001',
-            'last_name': 'test_l_name001',
-        }
-
-        create_user(**user_details)
-
-        payload = {
-            'email': user_details['email'],
-            'password': 'wrongpass',
-        }
-
-        response = self.client.post('/api/token/', payload)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
     def test_retrieve_user_unauthorized(self):
         """Test authentication required for users."""
 

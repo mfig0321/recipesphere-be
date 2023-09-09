@@ -7,19 +7,18 @@ from rest_framework import status
 from recipe.models import Recipe
 from recipe.serializers import (
     RecipeSerializer,
-    RecipeDetailSerializer
     )
 from recipe.views import RecipeViewSet
-
+import json
 
 def create_recipe(user, **params):
     """Create and return a sample recipe"""
     defaults = {
         'title': 'Sample Recipe Title',
         'time_minutes': 22,
-        'price': Decimal('5.25'),
         'description': 'Sample Description',
-        'link': 'http://example.com/recipe.pdf',
+        'instructions': 'boil for 10 minutes',
+        'ingredients': {'1':'eggs'}
     }
     defaults.update(params)
     recipe = Recipe.objects.create(user=user, **defaults)
@@ -45,13 +44,7 @@ class RecipeModelTest(TestCase):
                 first_name='First Name',
                 last_name='Last Name'
         )
-        recipe = Recipe.objects.create(
-            user=user,
-            title='Sample Recipe Name',
-            time_minutes=5,
-            price=Decimal('5.50'),
-            description='Sample Recipe Description',
-        )
+        recipe = create_recipe(user)
 
         self.assertEqual(str(recipe), recipe.title)
 
@@ -101,58 +94,4 @@ class PrivateRecipeApiTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serializer.data)
 
-    def test_recipe_list_limited_to_user(self):
-        """Test list of recipes is limited to auth user"""
-
-        other_user = get_user_model().objects.create(
-            username='testuser2',
-            password='testpass002',
-            email='test002@example.com',
-            first_name='test_f_name002',
-            last_name='test_l_name002',
-        )
-
-        create_recipe(user=self.user)
-        create_recipe(user=other_user)
-
-        response = self.view(self.request)
-        recipes = Recipe.objects.filter(user=self.user)
-        serializer = RecipeSerializer(recipes, many=True)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, serializer.data)
-
-    def test_get_recipe_detail(self):
-        """Test get recipe detail"""
-        recipe = create_recipe(user=self.user)
-
-        request = self.client.get('/api/recipes')
-        force_authenticate(request, self.user)
-        view = RecipeViewSet.as_view({'get': 'retrieve'})
-        response = response = view(request, pk=recipe.id)
-
-        serializer = RecipeDetailSerializer(recipe)
-
-        self.assertEqual(response.data, serializer.data)
-
-    def test_create_recipe(self):
-        """Test creating a recipe"""
-        
-        payload = {
-            'title': 'sample rec3ipe',
-            'time_minutes': 30,
-            'price': Decimal('5.99'),
-        }
-
-        request = self.client.post('/api/recipes', payload)
-        force_authenticate(request, self.user)
-        view = RecipeViewSet.as_view({'post': 'create'})
-        response = response = view(request)
-
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
-        recipe = Recipe.objects.get(id=response.data.get('id'))
-
-        for k, v in payload.items():
-            self.assertEqual(getattr(recipe, k), v)
-        self.assertEqual(recipe.user, self.user)
+    

@@ -33,6 +33,18 @@ class CreateUserView(CreateAPIView):
     ]
     serializer_class = UserSerializer
 
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response({
+                'detail':'User Created',
+                'status': 201}, status=201)
+        else:
+            errors_parsed = serializer.errors
+            errors_parsed['status'] = 400
+            return Response(errors_parsed, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CreateTokenView(ObtainAuthToken):
     """Create a new auth token for user."""
@@ -42,19 +54,29 @@ class CreateTokenView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        profile = models.Profile.objects.get(user=user.pk)
-        if profile.is_email_verified == False:
-            return Response(
-                {'detail':'user email must be confirmed'},
-                status=status.HTTP_403_FORBIDDEN)
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user_id': user.pk,
-            'email': user.email
-        })
+        if (serializer.is_valid()):
+
+            user = serializer.validated_data['user']
+            profile = models.Profile.objects.get(user=user.pk)
+            if profile.is_email_verified == False:
+                return Response(
+                    {'detail':'user email must be confirmed','status':403},
+                    status=status.HTTP_403_FORBIDDEN)
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({
+                'token': token.key,
+                'user_id': user.pk,
+                'email': user.email,
+                'status': 200
+            })
+        else:
+            errors_parsed = serializer.errors
+            errors_parsed['status'] = 400
+            print(errors_parsed)
+            return response.Response(
+                errors_parsed,
+                status=400,
+            )
 
 
 class ManageUserView(RetrieveUpdateAPIView):
@@ -76,9 +98,14 @@ class ProfileViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def list(self, *args, **kwargs):
-        self.serializer_class = ProfileSerializer
-        return viewsets.ModelViewSet.list(self, *args, **kwargs)
+    def list(self, request):
+        obj = models.Profile.objects.filter(user=request.user).first()
+        serializer = ProfileSerializer(obj)
+        data = serializer.data
+        data['status'] = 200
+        return response.Response(
+            data
+        )
     
     @action(detail=False, methods=['post'])
     def add_favorite(self, request, **kwargs):
@@ -86,7 +113,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile = models.Profile.objects.filter(user=self.request.user.pk).first()
         profile.favorites.add(recipe)
 
-        return response.Response({"detail":"Favorite added"})
+        return response.Response({
+            "detail":"Favorite added",
+            "status": 200
+        })
 
     @action(detail=False, methods=['post'])
     def remove_favorite(self, request, **kwargs):
@@ -94,7 +124,11 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile = models.Profile.objects.filter(user=self.request.user.pk).first()
         profile.favorites.remove(recipe)
 
-        return response.Response({"detail":"Favorite removed"})
+        return response.Response({
+            "detail":"Favorite removed",
+            "status": 200
+            }
+        )
 
 class VerifyEmailView(views.APIView):
     permission_classes = [
@@ -107,19 +141,22 @@ class VerifyEmailView(views.APIView):
         user = User.objects.filter(email=data.get('email')).first()
         if user is None:
             return Response(
-                    {'detail':f'No user found for {data.get("email")}'},
+                    {
+                        'detail':f'No user found for {data.get("email")}',
+                        'status': 400
+                    },
                     status=status.HTTP_400_BAD_REQUEST)
         profile = models.Profile.objects.filter(user=user.pk).first()
         if profile.otp != data.get('otp'):
 
             return Response(
-                    {'detail':'Incorrect otp'},
+                    {'detail':'Incorrect otp','status': 400},
                     status=status.HTTP_400_BAD_REQUEST)
         elif profile.otp == data.get('otp'):
             profile.is_email_verified = True
             profile.save()
             return Response(
-                    {'detail':'Your email has been verfied. You can now login.'},
+                    {'detail':'Your email has been verfied. You can now login.','status':200},
                     status=status.HTTP_200_OK)
 
 

@@ -185,3 +185,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         EmailMsg.send()
 
         return response.Response({'detail': f'recipe sent to {request.data.get("email")}.'})
+
+    @action(detail=False, methods=['get'])
+    def my_recipes(self, request, **kwargs):
+        recipes = Recipe.objects.filter(user=request.user)
+        serializer =  serializers.RecipeSerializer(recipes, many=True)
+        return response.Response(serializer.data)

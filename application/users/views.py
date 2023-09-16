@@ -90,6 +90,13 @@ class ManageUserView(RetrieveUpdateAPIView):
         """Retrieve and Return the authenticated user."""
         return self.request.user
 
+    def retrieve(self, request, *args, **kwargs):
+       user = self.request.user
+       serializer = UserSerializer(user)
+       data = serializer.data
+       data['status'] = 200
+       return Response(data)
+
 
 class ProfileViewSet(viewsets.ModelViewSet):
     """View for manage recipe APIs."""

@@ -4,8 +4,9 @@ Demo Backend using Django REST
 ## Getting Started
 
 - Install Docker
-1. https://docs.docker.com/engine/install/
-2. Run command `docker-compose up` or `sudo docker-compose up` if on linux.
+1. create .env file from .env_template in root directory of cloned project.
+2. https://docs.docker.com/engine/install/
+3. Run command `docker-compose up` or `sudo docker-compose up` if on linux.
 
 ## Making requests via api docs.
 1. go to browser address http:localhost:8000/api/docs/
